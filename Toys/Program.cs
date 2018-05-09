@@ -13,11 +13,9 @@ namespace Toys
             Test test = new Test();
             System.Threading.Thread thread1 = new System.Threading.Thread(test.Test1);
             System.Threading.Thread thread2 = new System.Threading.Thread(test.Test2);
-            System.Threading.Thread thread3 = new System.Threading.Thread(test.Test3);
 
             thread1.Start();
             thread2.Start();
-            thread3.Start();
         }
     }
 }

@@ -10,104 +10,32 @@ namespace Toys
     {
         List<Toy> toysList = new List<Toy>();
         private double limit;
-
-        public double Limit { get => limit; set => limit = value; }
-
-        public delegate void NumberToyHandler();
-        public event NumberToyHandler ChangeNumber;
         private double sum = 0;
 
-        public delegate void ValueSpeedToyHandler();
-        public event ValueSpeedToyHandler ValueSpeedChange;
+        public delegate void ValueLimit(Toy toy, EventArgs eventArgs);
+        public event ValueLimit valueLimit;
 
-        public delegate void ValueHeightToyHandler();
-        public event ValueHeightToyHandler ValueHeightChange;
-
-
-        public delegate void ValueDepthToyHandler();
-        public event ValueDepthToyHandler ValueDepthChange;
-
-
-        public delegate void LimitValueToyHandler();
-        public event LimitValueToyHandler LimitChange;
-
-        public virtual void OnLimitChange()
+        public static void LimitReached(Object item, EventArgs eventArgs)
         {
-            if (LimitChange != null)
-            {
-                LimitChange();
-            }
-            else
-            {
-                Console.WriteLine("Price reached maximum");
-                Console.ReadLine();
-            }
+            System.Console.WriteLine("Limit reached");
         }
 
-
-
-        public virtual void OnValueDepthChanged()
+        public double Limit
         {
-            if (ValueDepthChange != null)
+            get
             {
-                ValueDepthChange();
+                return limit;
             }
-            else
+
+            set
             {
-                Console.WriteLine("Depth changed");
-                Console.ReadLine();
-            }
-        }
-
-
-
-        public virtual void OnValueHeightChanged()
-        {
-            if (ValueHeightChange != null)
-            {
-                ValueHeightChange();
-            }
-            else
-            {
-                Console.WriteLine("Heigth changed");
-                Console.ReadLine();
-            }
-        }
-
-
-
-        public virtual void OnValueSpeedChanged()
-        {
-            if (ValueSpeedChange != null)
-            {
-                ValueSpeedChange();
-            }
-            else
-            {
-                Console.WriteLine("Speed changed");
-                Console.ReadLine();
-            }
-        }
-
-
-
-        public virtual void OnToyAdded()
-        {
-            if (ChangeNumber != null)
-            {
-                ChangeNumber();
-            }
-            else
-            {
-                Console.WriteLine("Toy added");
-                Console.ReadLine();
+                limit = value;
             }
         }
 
         public void AddToy(Toy newToy)
         {
             toysList.Add(newToy);
-            OnToyAdded();
             try
             {
                 if (toysList.Count > 1)
@@ -115,9 +43,9 @@ namespace Toys
                     foreach (Toy toy in toysList)
                     {
                         sum += toy.ActualValue;
-                        if (limit < sum)
+                        if (Limit < sum)
                         {
-                            OnLimitChange();
+                            valueLimit(toy, new EventArgs());
                         }
                     }
                 }
@@ -134,9 +62,13 @@ namespace Toys
             {
                 foreach (Toy toy in toysList)
                 {
-                    toy.Depth = value;
+                    if(toy is IHasDepth)
+                    {
+                        IHasDepth temp = (IHasDepth)(toy);
+                        temp.Depth = value;
+                    }
+                    
                 }
-                OnValueDepthChanged();
             }
         }
         public void ChangeHeight(double value)
@@ -145,9 +77,12 @@ namespace Toys
             {
                 foreach (Toy toy in toysList)
                 {
-                    toy.Height = value;
+                    if (toy is IHasHeight)
+                    {
+                        IHasHeight temp = (IHasHeight)(toy);
+                        temp.Height = value;
+                    }            
                 }
-                OnValueHeightChanged();
             }
         }
 
@@ -157,9 +92,12 @@ namespace Toys
             {
                 foreach (Toy toy in toysList)
                 {
-                    toy.Speed = value;
+                    if (toy is IHasSpeed)
+                    {
+                        IHasSpeed temp = (IHasSpeed)(toy);
+                        temp.Speed = value;
+                    }
                 }
-                OnValueSpeedChanged();
             }
         }
 
@@ -184,14 +122,41 @@ namespace Toys
             foreach(var toy in toysList)
             {
                 System.Console.WriteLine(i + "\t");
-                System.Console.WriteLine("Speed: " + toy.Speed);
-                System.Console.WriteLine("Height: " + toy.Height);
-                System.Console.WriteLine("Depth: " + toy.Depth);
+                printSpeed(toy);
+                printHeight(toy);
+                printDepth(toy);
                 System.Console.WriteLine("Age: " + toy.Age);
                 i++;
             }
 
             System.Console.ReadLine();
+        }
+
+        private void printSpeed(Toy toy)
+        {
+            if (toy is IHasSpeed)
+            {
+                IHasSpeed temp = (IHasSpeed)(toy);
+                System.Console.WriteLine("Speed: " + temp.Speed);
+            }
+        }
+
+        private void printHeight(Toy toy)
+        {
+            if (toy is IHasHeight)
+            {
+                IHasHeight temp = (IHasHeight)(toy);
+                System.Console.WriteLine("Height: " + temp.Height);
+            }
+        }
+
+        private void printDepth(Toy toy)
+        {
+            if (toy is IHasDepth)
+            {
+                IHasDepth temp = (IHasDepth)(toy);
+                System.Console.WriteLine("Depth: " + temp.Depth);
+            }
         }
 
     }

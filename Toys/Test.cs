@@ -17,10 +17,11 @@ namespace Toys
             {
                 toysRoom.Limit = 1000;
                 Value value = new Value(7, 24);
-                Toy toy = new Toy(5.1, 6.3, 7.5, 3, value);
+                Toy toy = new Box(7, value, 8.5, 4.3);
                 toysRoom.AddToy(toy);
                 toysRoom.ChangeDepth(1);
                 toysRoom.PrintToys();
+                toysRoom.valueLimit += ToysRoom.LimitReached;
 
             }
         }
@@ -30,26 +31,24 @@ namespace Toys
             while (true)
             {
                 Value value = new Value(11.7, 15);
-                Toy toy = new Toy(8.3, 7, 3, 5, value);
+                Toy toy = new Car(5, value, 17);
                 toysRoom.AddToy(toy);
-                toysRoom.ChangeHeight(2);
+                toysRoom.ChangeSpeed(100);
                 toysRoom.PrintToys();
-
-
+                toysRoom.valueLimit += ToysRoom.LimitReached;
             }
         }
-
 
         public void Test3()
         {
             while (true)
             {
-                Value value = new Value(70.5, 150);
-                Toy toy = new Toy(5, 7.5, 2.3, 1, value);
+                Value value = new Value(8.7, 12.4);
+                Toy toy = new Ball(5, value, 2.5);
                 toysRoom.AddToy(toy);
-                toysRoom.ChangeSpeed(3);
+                toysRoom.ChangeHeight(2);
                 toysRoom.PrintToys();
-
+                toysRoom.valueLimit += ToysRoom.LimitReached;
             }
         }
     }
