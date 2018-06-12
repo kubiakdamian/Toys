@@ -12,16 +12,11 @@ namespace Toys
         private double limit;
         private double sum = 0;
 
-        public delegate void ValueLimit(Toy toy, EventArgs eventArgs);
-        public event ValueLimit valueLimit;
+        public delegate void ToyAdded();
+        public event ToyAdded onToyAdded;
 
-        public delegate void increaseValue(Toy toy, EventArgs eventArgs);
-        public event increaseValue onIncreaseValue;
-
-        public static void LimitReached(Object item, EventArgs eventArgs)
-        {
-            System.Console.WriteLine("Limit reached");
-        }
+        public delegate void ValueIncrease();
+        public event ValueIncrease onValueIncrease;
 
         public double Limit
         {
@@ -39,23 +34,15 @@ namespace Toys
         public void AddToy(Toy newToy)
         {
             toysList.Add(newToy);
+            onToyAdded?.Invoke();
             try
             {
                 if (toysList.Count > 1)
                 {
+                    onValueIncrease?.Invoke();
                     foreach (Toy toy in toysList)
                     {
                         sum += toy.ActualValue;
-                        onIncreaseValue(toy, new EventArgs());
-                        if(onIncreaseValue != null)
-                        {
-                            onIncreaseValue.Invoke(toy, new EventArgs());
-                        }     
-
-                        if (Limit < sum)
-                        {
-                            valueLimit(toy, new EventArgs());
-                        }
                     }
                 }
             }
@@ -128,15 +115,22 @@ namespace Toys
         {
             int i = 1;
 
-            foreach(var toy in toysList)
+            try
             {
-                System.Console.WriteLine(i + "\t");
-                printSpeed(toy);
-                printHeight(toy);
-                printDepth(toy);
-                System.Console.WriteLine("Age: " + toy.Age);
-                i++;
+                foreach (var toy in toysList)
+                {
+                    System.Console.WriteLine(i + "\t");
+                    printSpeed(toy);
+                    printHeight(toy);
+                    printDepth(toy);
+                    System.Console.WriteLine("Age: " + toy.Age);
+                    i++;
+                }
+            }catch(Exception ex)
+            {
+                Console.WriteLine("Couldn't print data");
             }
+            
 
             System.Console.ReadLine();
         }

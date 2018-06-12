@@ -9,21 +9,29 @@ namespace Toys
     class Test
     {
         ToysRoom toysRoom = new ToysRoom();
+        private void ToyAddedMsg()
+        {
+            Console.WriteLine("Toy added");
+        }
+        private void ValueIncreaseMsg()
+        {
+            Console.WriteLine("Value increased");
+        }
+
 
 
         public void Test1()
         {
             while (true)
-            {
+            {            
                 toysRoom.Limit = 1000;
                 Value value = new Value(7, 24);
                 Toy toy = new Box(7, value, 8.5, 4.3);
-                toy.onValueIncrease += Toy.onIncreaseValueText;
                 toysRoom.AddToy(toy);
                 toysRoom.ChangeDepth(1);
                 toysRoom.PrintToys();
-                toysRoom.valueLimit += ToysRoom.LimitReached;
-
+                toysRoom.onToyAdded += new ToysRoom.ToyAdded(ToyAddedMsg);
+                toysRoom.onValueIncrease += new ToysRoom.ValueIncrease(ValueIncreaseMsg);
             }
         }
 
@@ -33,11 +41,9 @@ namespace Toys
             {
                 Value value = new Value(11.7, 15);
                 Toy toy = new Car(5, value, 17);
-                toy.onValueIncrease += Toy.onIncreaseValueText;
                 toysRoom.AddToy(toy);
                 toysRoom.ChangeSpeed(100);
                 toysRoom.PrintToys();
-                toysRoom.valueLimit += ToysRoom.LimitReached;
             }
         }
 
@@ -47,11 +53,9 @@ namespace Toys
             {
                 Value value = new Value(8.7, 12.4);
                 Toy toy = new Ball(5, value, 2.5);
-                toy.onValueIncrease += Toy.onIncreaseValueText;
                 toysRoom.AddToy(toy);
                 toysRoom.ChangeHeight(2);
                 toysRoom.PrintToys();
-                toysRoom.valueLimit += ToysRoom.LimitReached;
             }
         }
     }
