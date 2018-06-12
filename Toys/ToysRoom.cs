@@ -18,6 +18,9 @@ namespace Toys
         public delegate void ValueIncrease();
         public event ValueIncrease onValueIncrease;
 
+        public delegate void LimitReached();
+        public event LimitReached onLimitReached;
+
         public double Limit
         {
             get
@@ -44,6 +47,11 @@ namespace Toys
                     {
                         sum += toy.ActualValue;
                     }
+                }
+
+                if(sum > limit)
+                {
+                    onLimitReached?.Invoke();
                 }
             }
             catch (System.InvalidOperationException ex)
@@ -102,8 +110,8 @@ namespace Toys
             if (toysList.Count > 1)
             {
                 toysList.RemoveAt(toysList.Count - 1);
+                sum += toysList.ElementAt(toysList.Count - 1).ActualValue;
                 Console.WriteLine("Last Toy removed");
-                Console.ReadLine();
             }
             else
             {

@@ -93,7 +93,7 @@ namespace Toys
         {
             this.Age = age;
             this.basicValue = basicValue;
-            this.ActualValue = age * (basicValue.Price + basicValue.SentimentalValue);
+            this.ActualValue = (basicValue.Price + basicValue.SentimentalValue) / age;
         }
     }
 }

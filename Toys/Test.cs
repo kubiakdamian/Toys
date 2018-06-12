@@ -8,6 +8,7 @@ namespace Toys
 {
     class Test
     {
+        private bool canAdd = true;
         ToysRoom toysRoom = new ToysRoom();
         private void ToyAddedMsg()
         {
@@ -18,11 +19,23 @@ namespace Toys
             Console.WriteLine("Value increased");
         }
 
-
-
-        public void Test1()
+        private void LimitReachedMsg()
         {
-            while (true)
+            Console.WriteLine("Limit reached, press enter to exit");
+            canAdd = false;
+            Console.ReadLine();
+            Environment.Exit(0);
+        }
+
+
+
+        public void test1()
+        {
+            toysRoom.onToyAdded += new ToysRoom.ToyAdded(ToyAddedMsg);
+            toysRoom.onValueIncrease += new ToysRoom.ValueIncrease(ValueIncreaseMsg);
+            toysRoom.onLimitReached += new ToysRoom.LimitReached(LimitReachedMsg);
+
+            while (canAdd)
             {            
                 toysRoom.Limit = 1000;
                 Value value = new Value(7, 24);
@@ -30,31 +43,25 @@ namespace Toys
                 toysRoom.AddToy(toy);
                 toysRoom.ChangeDepth(1);
                 toysRoom.PrintToys();
-                toysRoom.onToyAdded += new ToysRoom.ToyAdded(ToyAddedMsg);
-                toysRoom.onValueIncrease += new ToysRoom.ValueIncrease(ValueIncreaseMsg);
+
+
+
             }
         }
 
-        public void Test2()
+        public void test2()
         {
-            while (true)
-            {
-                Value value = new Value(11.7, 15);
-                Toy toy = new Car(5, value, 17);
-                toysRoom.AddToy(toy);
-                toysRoom.ChangeSpeed(100);
-                toysRoom.PrintToys();
-            }
-        }
+            toysRoom.onToyAdded += new ToysRoom.ToyAdded(ToyAddedMsg);
+            toysRoom.onValueIncrease += new ToysRoom.ValueIncrease(ValueIncreaseMsg);
+            toysRoom.onLimitReached += new ToysRoom.LimitReached(LimitReachedMsg);
 
-        public void Test3()
-        {
-            while (true)
+            while (canAdd)
             {
-                Value value = new Value(8.7, 12.4);
-                Toy toy = new Ball(5, value, 2.5);
+                toysRoom.Limit = 1000;
+                Value value = new Value(7, 24);
+                Toy toy = new Car(7, value, 115);
                 toysRoom.AddToy(toy);
-                toysRoom.ChangeHeight(2);
+                toysRoom.ChangeHeight(5.7);
                 toysRoom.PrintToys();
             }
         }
