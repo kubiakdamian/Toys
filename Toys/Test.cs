@@ -10,6 +10,7 @@ namespace Toys
     {
         private bool canAdd = true;
         ToysRoom toysRoom = new ToysRoom();
+        static readonly object _lock = new object();
         private void ToyAddedMsg()
         {
             Console.WriteLine("Toy added");
@@ -31,38 +32,40 @@ namespace Toys
 
         public void test1()
         {
-            toysRoom.onToyAdded += new ToysRoom.ToyAdded(ToyAddedMsg);
-            toysRoom.onValueIncrease += new ToysRoom.ValueIncrease(ValueIncreaseMsg);
-            toysRoom.onLimitReached += new ToysRoom.LimitReached(LimitReachedMsg);
-
-            while (canAdd)
-            {            
+            lock (_lock)
+            {
                 toysRoom.Limit = 1000;
-                Value value = new Value(7, 24);
-                Toy toy = new Box(7, value, 8.5, 4.3);
-                toysRoom.AddToy(toy);
-                toysRoom.ChangeDepth(1);
-                toysRoom.PrintToys();
-
-
-
+                toysRoom.onToyAdded += new ToysRoom.ToyAdded(ToyAddedMsg);
+                toysRoom.onValueIncrease += new ToysRoom.ValueIncrease(ValueIncreaseMsg);
+                toysRoom.onLimitReached += new ToysRoom.LimitReached(LimitReachedMsg);
+                     
+                for(int i = 0; i < 7; i++)
+                {          
+                    Value value = new Value(7, 24);
+                    Toy toy = new Box(7, value, 8.5, 4.3);
+                    toysRoom.AddToy(toy);
+                    toysRoom.ChangeDepth(1);
+                    toysRoom.PrintToys();
+                }
             }
         }
 
         public void test2()
         {
-            toysRoom.onToyAdded += new ToysRoom.ToyAdded(ToyAddedMsg);
-            toysRoom.onValueIncrease += new ToysRoom.ValueIncrease(ValueIncreaseMsg);
-            toysRoom.onLimitReached += new ToysRoom.LimitReached(LimitReachedMsg);
-
-            while (canAdd)
+            lock (_lock)
             {
-                toysRoom.Limit = 1000;
-                Value value = new Value(7, 24);
-                Toy toy = new Car(7, value, 115);
-                toysRoom.AddToy(toy);
-                toysRoom.ChangeHeight(5.7);
-                toysRoom.PrintToys();
+                toysRoom.onToyAdded += new ToysRoom.ToyAdded(ToyAddedMsg);
+                toysRoom.onValueIncrease += new ToysRoom.ValueIncrease(ValueIncreaseMsg);
+                toysRoom.onLimitReached += new ToysRoom.LimitReached(LimitReachedMsg);
+
+                while (canAdd)
+                {
+                    Value value = new Value(7, 24);
+                    Toy toy = new Car(7, value, 115);
+                    toysRoom.AddToy(toy);
+                    toysRoom.ChangeHeight(5.7);
+                    toysRoom.PrintToys();
+                }
             }
         }
     }

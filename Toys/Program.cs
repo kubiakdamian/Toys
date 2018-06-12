@@ -15,9 +15,9 @@ namespace Toys
             System.Threading.Thread thread2 = new System.Threading.Thread(test.test2);
 
             thread1.Start();
-            thread2.Start();
-
             thread1.Join();
+
+            thread2.Start();            
             thread2.Join();
         }
     }
