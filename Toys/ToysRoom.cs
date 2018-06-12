@@ -15,6 +15,9 @@ namespace Toys
         public delegate void ValueLimit(Toy toy, EventArgs eventArgs);
         public event ValueLimit valueLimit;
 
+        public delegate void increaseValue(Toy toy, EventArgs eventArgs);
+        public event increaseValue onIncreaseValue;
+
         public static void LimitReached(Object item, EventArgs eventArgs)
         {
             System.Console.WriteLine("Limit reached");
@@ -43,6 +46,12 @@ namespace Toys
                     foreach (Toy toy in toysList)
                     {
                         sum += toy.ActualValue;
+                        onIncreaseValue(toy, new EventArgs());
+                        if(onIncreaseValue != null)
+                        {
+                            onIncreaseValue.Invoke(toy, new EventArgs());
+                        }     
+
                         if (Limit < sum)
                         {
                             valueLimit(toy, new EventArgs());

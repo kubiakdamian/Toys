@@ -10,13 +10,13 @@ namespace Toys
     {
         private double price;
         private double sentimentalValue;
-        
 
         public Value(double price, double sentimentalValue)
         {
             this.price = price;
             this.sentimentalValue = sentimentalValue;
         }
+
 
         public double SentimentalValue
         {
@@ -62,6 +62,14 @@ namespace Toys
         private int age;
         private double actualValue;
         Value basicValue;
+
+        public delegate void valueIncrease(Toy item, EventArgs eventArgs);
+        public event valueIncrease onValueIncrease;
+        
+        public static void onIncreaseValueText(Toy item, EventArgs eventArgs)
+        {
+            Console.WriteLine("Value increased");
+        }
 
         public int Age
         {

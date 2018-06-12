@@ -18,6 +18,7 @@ namespace Toys
                 toysRoom.Limit = 1000;
                 Value value = new Value(7, 24);
                 Toy toy = new Box(7, value, 8.5, 4.3);
+                toy.onValueIncrease += Toy.onIncreaseValueText;
                 toysRoom.AddToy(toy);
                 toysRoom.ChangeDepth(1);
                 toysRoom.PrintToys();
@@ -32,6 +33,7 @@ namespace Toys
             {
                 Value value = new Value(11.7, 15);
                 Toy toy = new Car(5, value, 17);
+                toy.onValueIncrease += Toy.onIncreaseValueText;
                 toysRoom.AddToy(toy);
                 toysRoom.ChangeSpeed(100);
                 toysRoom.PrintToys();
@@ -45,6 +47,7 @@ namespace Toys
             {
                 Value value = new Value(8.7, 12.4);
                 Toy toy = new Ball(5, value, 2.5);
+                toy.onValueIncrease += Toy.onIncreaseValueText;
                 toysRoom.AddToy(toy);
                 toysRoom.ChangeHeight(2);
                 toysRoom.PrintToys();
